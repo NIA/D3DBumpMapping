@@ -128,3 +128,4 @@ m4x4 oPos, r1, c0
 mov oD0.rg, v2.xy
 mov oD0.ba, c100.ba
 ;mul oD0, v1, r6
+mov oT0, v2

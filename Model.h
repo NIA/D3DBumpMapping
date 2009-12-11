@@ -2,6 +2,7 @@
 #include "main.h"
 #include "Vertex.h"
 #include "shaders.h"
+#include "Texture.h"
 
 class Model
 {
@@ -12,6 +13,7 @@ private:
     VertexShader        &vertex_shader;
     VertexShader        &shadow_vertex_shader;
     PixelShader         &pixel_shader;
+    PixelShader         &shadow_pixel_shader;
 
     unsigned    vertices_count;
     unsigned    primitives_count;
@@ -35,6 +37,7 @@ public:
             VertexShader &vertex_shader,
             VertexShader &shadow_vertex_shader,
             PixelShader &pixel_shader,
+            PixelShader &shadow_pixel_shader,
             VertexDeclaration &vertex_declaration,
             unsigned vertex_size,
             const Vertex *vertices,
@@ -49,8 +52,9 @@ public:
     {
         vertex_declaration.set();
         shadow ? shadow_vertex_shader.set() : vertex_shader.set();
-        pixel_shader.set();
+        shadow ? shadow_pixel_shader.set() : pixel_shader.set();
     }
+    virtual void set_textures(bool shadow) { UNREFERENCED_PARAMETER(shadow); check_render( device->SetTexture(0, NULL) ); }
     virtual void set_time(float time) { UNREFERENCED_PARAMETER(time); }
     
     // set_constants() returns number of constant registers used
@@ -73,12 +77,14 @@ class TexturedMorphingModel : public Model
 private:
     float morphing_param;
     float final_radius;
+    Texture &texture;
 public:
     TexturedMorphingModel(  IDirect3DDevice9 *device,
                             D3DPRIMITIVETYPE primitive_type,
                             VertexShader &vertex_shader,
                             VertexShader &shadow_vertex_shader,
                             PixelShader &pixel_shader,
+                            PixelShader &shadow_pixel_shader,
                             const TexturedVertex *vertices,
                             unsigned vertices_count,
                             const Index *indices,
@@ -86,10 +92,18 @@ public:
                             unsigned primitives_count,
                             D3DXVECTOR3 position,
                             D3DXVECTOR3 rotation,
-                            float final_radius);
+                            float final_radius,
+                            Texture &texture);
 
     // Overrides:
     virtual void set_time(float time);
+    virtual void set_textures(bool shadow)
+    {
+        if(shadow)
+            Model::set_textures(shadow);
+        else
+            texture.set();
+    }
     virtual unsigned set_constants(D3DXVECTOR4 *out_data, unsigned buffer_size) const; // returns number of constant registers used
 };
 

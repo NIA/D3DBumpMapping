@@ -119,6 +119,7 @@ inline void Application::draw_model(Model *model, float time, bool shadow)
     set_shader_matrix( SHADER_REG_POS_AND_ROT_MX, model->get_rotation_and_position() );
     
     model->set_shaders_and_decl(shadow);
+    model->set_textures(shadow);
     model->draw();
 }
 
