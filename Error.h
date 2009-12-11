@@ -81,6 +81,16 @@ class NoMemoryError : public RuntimeError
 public:
     NoMemoryError() : RuntimeError( _T("Error: not enough memory") ) {}
 };
+class PixelShaderAssemblyError : public RuntimeError
+{
+public:
+    PixelShaderAssemblyError() : RuntimeError( _T("Error while assembling pixel shader") ) {}
+};
+class PixelShaderInitError : public RuntimeError
+{
+public:
+    PixelShaderInitError() : RuntimeError( _T("Error while creating pixel shader") ) {}
+};
 
 inline void check_render( HRESULT res )
 {

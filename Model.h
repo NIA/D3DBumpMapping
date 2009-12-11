@@ -7,9 +7,11 @@ class Model
 {
 private:
     IDirect3DDevice9    *device;
+
+    VertexDeclaration   &vertex_declaration;
     VertexShader        &vertex_shader;
     VertexShader        &shadow_vertex_shader;
-    VertexDeclaration   &vertex_declaration;
+    PixelShader         &pixel_shader;
 
     unsigned    vertices_count;
     unsigned    primitives_count;
@@ -32,6 +34,7 @@ public:
             D3DPRIMITIVETYPE primitive_type,
             VertexShader &vertex_shader,
             VertexShader &shadow_vertex_shader,
+            PixelShader &pixel_shader,
             VertexDeclaration &vertex_declaration,
             unsigned vertex_size,
             const Vertex *vertices,
@@ -42,10 +45,11 @@ public:
             D3DXVECTOR3 position,
             D3DXVECTOR3 rotation);
     
-    void set_shader_and_decl(bool shadow)
+    void set_shaders_and_decl(bool shadow)
     {
         vertex_declaration.set();
         shadow ? shadow_vertex_shader.set() : vertex_shader.set();
+        pixel_shader.set();
     }
     virtual void set_time(float time) { UNREFERENCED_PARAMETER(time); }
     
@@ -74,6 +78,7 @@ public:
                             D3DPRIMITIVETYPE primitive_type,
                             VertexShader &vertex_shader,
                             VertexShader &shadow_vertex_shader,
+                            PixelShader &pixel_shader,
                             const TexturedVertex *vertices,
                             unsigned vertices_count,
                             const Index *indices,
@@ -97,6 +102,7 @@ public:
     Plane(  IDirect3DDevice9 *device,
             D3DPRIMITIVETYPE primitive_type,
             VertexShader &vertex_shader,
+            PixelShader &pixel_shader,
             const Vertex *vertices,
             unsigned vertices_count,
             const Index *indices,
@@ -116,6 +122,7 @@ public:
     LightSource( IDirect3DDevice9 *device,
                  D3DPRIMITIVETYPE primitive_type,
                  VertexShader &vertex_shader,
+                 PixelShader &pixel_shader,
                  const TexturedVertex *vertices,
                  unsigned vertices_count,
                  const Index *indices,

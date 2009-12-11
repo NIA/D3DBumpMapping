@@ -43,10 +43,11 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, INT )
         {
             Application app;
 
-            VertexShader morphing_shader(app.get_device(), MORPHING_SHADER_FILENAME);
-            VertexShader morphing_shadow_shader(app.get_device(), MORPHING_SHADOW_SHADER_FILENAME);
-            VertexShader plane_shader(app.get_device(), PLANE_SHADER_FILENAME);
-            VertexShader light_source_shader(app.get_device(), LIGHT_SOURCE_SHADER_FILENAME);
+            VertexShader morphing_vertex_shader(app.get_device(), MORPHING_SHADER_FILENAME);
+            VertexShader morphing_shadow_vertex_shader(app.get_device(), MORPHING_SHADOW_SHADER_FILENAME);
+            VertexShader plane_vertex_shader(app.get_device(), PLANE_SHADER_FILENAME);
+            VertexShader light_source_vertex_shader(app.get_device(), LIGHT_SOURCE_SHADER_FILENAME);
+            PixelShader no_pixel_shader(app.get_device());
             
             // -------------------------- P y r a m i d -----------------------
             sphere_vertices = new TexturedVertex[SPHERE_ALL_TESSELATED_VERTICES_COUNT];
@@ -56,8 +57,9 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, INT )
             
             TexturedMorphingModel sphere( app.get_device(),
                                   D3DPT_TRIANGLELIST,
-                                  morphing_shader,
-                                  morphing_shadow_shader,
+                                  morphing_vertex_shader,
+                                  morphing_shadow_vertex_shader,
+                                  no_pixel_shader,
                                   sphere_vertices,
                                   SPHERE_ALL_TESSELATED_VERTICES_COUNT,
                                   sphere_indices,
@@ -74,7 +76,8 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, INT )
 
             Plane plane( app.get_device(),
                          D3DPT_TRIANGLELIST,
-                         plane_shader,
+                         plane_vertex_shader,
+                         no_pixel_shader,
                          plane_vertices,
                          PLANE_VERTICES_COUNT,
                          plane_indices,
@@ -91,7 +94,8 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, INT )
 
             LightSource light_source( app.get_device(),
                                       D3DPT_TRIANGLELIST,
-                                      light_source_shader,
+                                      light_source_vertex_shader,
+                                      no_pixel_shader,
                                       light_source_vertices,
                                       LIGHT_SOURCE_ALL_TESSELATED_VERTICES_COUNT,
                                       light_source_indices,
