@@ -43,10 +43,10 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, INT )
         {
             Application app;
 
-            VertexShader morphing_shader(app.get_device(), TEXTURED_VERTEX_DECL_ARRAY, MORPHING_SHADER_FILENAME);
-            VertexShader morphing_shadow_shader(app.get_device(), TEXTURED_VERTEX_DECL_ARRAY, MORPHING_SHADOW_SHADER_FILENAME);
-            VertexShader plane_shader(app.get_device(), VERTEX_DECL_ARRAY, PLANE_SHADER_FILENAME);
-            VertexShader light_source_shader(app.get_device(), TEXTURED_VERTEX_DECL_ARRAY, LIGHT_SOURCE_SHADER_FILENAME);
+            VertexShader morphing_shader(app.get_device(), MORPHING_SHADER_FILENAME);
+            VertexShader morphing_shadow_shader(app.get_device(), MORPHING_SHADOW_SHADER_FILENAME);
+            VertexShader plane_shader(app.get_device(), PLANE_SHADER_FILENAME);
+            VertexShader light_source_shader(app.get_device(), LIGHT_SOURCE_SHADER_FILENAME);
             
             // -------------------------- P y r a m i d -----------------------
             sphere_vertices = new TexturedVertex[SPHERE_ALL_TESSELATED_VERTICES_COUNT];

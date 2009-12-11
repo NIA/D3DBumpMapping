@@ -1,14 +1,15 @@
 #pragma once
 #include "main.h"
 #include "Vertex.h"
-#include "Shader.h"
+#include "shaders.h"
 
 class Model
 {
 private:
     IDirect3DDevice9    *device;
-    VertexShader        &shader;
-    VertexShader        &shadow_shader;
+    VertexShader        &vertex_shader;
+    VertexShader        &shadow_vertex_shader;
+    VertexDeclaration   &vertex_declaration;
 
     unsigned    vertices_count;
     unsigned    primitives_count;
@@ -29,8 +30,9 @@ private:
 public:
     Model(  IDirect3DDevice9 *device,
             D3DPRIMITIVETYPE primitive_type,
-            VertexShader &shader,
-            VertexShader &shadow_shader,
+            VertexShader &vertex_shader,
+            VertexShader &shadow_vertex_shader,
+            VertexDeclaration &vertex_declaration,
             unsigned vertex_size,
             const Vertex *vertices,
             unsigned vertices_count,
@@ -40,8 +42,11 @@ public:
             D3DXVECTOR3 position,
             D3DXVECTOR3 rotation);
     
-    VertexShader &get_shader();
-    VertexShader &get_shadow_shader();
+    void set_shader_and_decl(bool shadow)
+    {
+        vertex_declaration.set();
+        shadow ? shadow_vertex_shader.set() : vertex_shader.set();
+    }
     virtual void set_time(float time) { UNREFERENCED_PARAMETER(time); }
     
     // set_constants() returns number of constant registers used
@@ -67,8 +72,8 @@ private:
 public:
     TexturedMorphingModel(  IDirect3DDevice9 *device,
                             D3DPRIMITIVETYPE primitive_type,
-                            VertexShader &shader,
-                            VertexShader &shadow_shader,
+                            VertexShader &vertex_shader,
+                            VertexShader &shadow_vertex_shader,
                             const TexturedVertex *vertices,
                             unsigned vertices_count,
                             const Index *indices,
@@ -91,7 +96,7 @@ private:
 public:
     Plane(  IDirect3DDevice9 *device,
             D3DPRIMITIVETYPE primitive_type,
-            VertexShader &shader,
+            VertexShader &vertex_shader,
             const Vertex *vertices,
             unsigned vertices_count,
             const Index *indices,
@@ -110,7 +115,7 @@ private:
 public:
     LightSource( IDirect3DDevice9 *device,
                  D3DPRIMITIVETYPE primitive_type,
-                 VertexShader &shader,
+                 VertexShader &vertex_shader,
                  const TexturedVertex *vertices,
                  unsigned vertices_count,
                  const Index *indices,

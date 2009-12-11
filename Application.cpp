@@ -118,16 +118,7 @@ inline void Application::draw_model(Model *model, float time, bool shadow)
     set_shader_const( SHADER_REG_MODEL_DATA, *model_constants, constants_used );
     set_shader_matrix( SHADER_REG_POS_AND_ROT_MX, model->get_rotation_and_position() );
     
-    // Draw
-    if( shadow )
-    {
-        // Shadow
-        ( model->get_shadow_shader() ).set();
-    }
-    else
-    {
-        ( model->get_shader() ).set();
-    }
+    model->set_shader_and_decl(shadow);
     model->draw();
 }
 
