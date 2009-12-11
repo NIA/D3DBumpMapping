@@ -17,7 +17,7 @@ namespace
     const float SPHERE_RADIUS = sqrt(2.0f);
     const float LIGHT_SOURCE_RADIUS = 0.04f;
 
-    const DWORD SPHERE_TESSELATE_DEGREE = 100;
+    const DWORD SPHERE_TESSELATE_DEGREE = 10;
     const Index SPHERE_ALL_TESSELATED_VERTICES_COUNT = pyramid_vertices_count(SPHERE_TESSELATE_DEGREE); // per 8 tessellated triangles
     const DWORD SPHERE_ALL_TESSELATED_INDICES_COUNT = pyramid_indices_count(SPHERE_TESSELATE_DEGREE); // per 8 tessellated triangles
 
@@ -31,11 +31,11 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, INT )
 {
     srand( static_cast<unsigned>( time(NULL) ) );
     
-    Vertex * sphere_vertices = NULL;
+    TexturedVertex * sphere_vertices = NULL;
     Index * sphere_indices = NULL;
     Vertex * plane_vertices = NULL;
     Index * plane_indices = NULL;
-    Vertex * light_source_vertices = NULL;
+    TexturedVertex * light_source_vertices = NULL;
     Index * light_source_indices = NULL;
     try
     {
@@ -43,18 +43,18 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, INT )
         {
             Application app;
 
-            VertexShader morphing_shader(app.get_device(), VERTEX_DECL_ARRAY, MORPHING_SHADER_FILENAME);
-            VertexShader morphing_shadow_shader(app.get_device(), VERTEX_DECL_ARRAY, MORPHING_SHADOW_SHADER_FILENAME);
+            VertexShader morphing_shader(app.get_device(), TEXTURED_VERTEX_DECL_ARRAY, MORPHING_SHADER_FILENAME);
+            VertexShader morphing_shadow_shader(app.get_device(), TEXTURED_VERTEX_DECL_ARRAY, MORPHING_SHADOW_SHADER_FILENAME);
             VertexShader plane_shader(app.get_device(), VERTEX_DECL_ARRAY, PLANE_SHADER_FILENAME);
-            VertexShader light_source_shader(app.get_device(), VERTEX_DECL_ARRAY, LIGHT_SOURCE_SHADER_FILENAME);
+            VertexShader light_source_shader(app.get_device(), TEXTURED_VERTEX_DECL_ARRAY, LIGHT_SOURCE_SHADER_FILENAME);
             
             // -------------------------- P y r a m i d -----------------------
-            sphere_vertices = new Vertex[SPHERE_ALL_TESSELATED_VERTICES_COUNT];
+            sphere_vertices = new TexturedVertex[SPHERE_ALL_TESSELATED_VERTICES_COUNT];
             sphere_indices = new Index[SPHERE_ALL_TESSELATED_INDICES_COUNT];
 
             pyramid(SPHERE_RADIUS*sqrt(2.0f), sphere_vertices, sphere_indices, SPHERE_COLOR, SPHERE_TESSELATE_DEGREE);
             
-            MorphingModel sphere( app.get_device(),
+            TexturedMorphingModel sphere( app.get_device(),
                                   D3DPT_TRIANGLELIST,
                                   morphing_shader,
                                   morphing_shadow_shader,
@@ -84,7 +84,7 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, INT )
                          D3DXVECTOR3(0,0,0) );
 
             // -------------------------- Light source --------------------------
-            light_source_vertices = new Vertex[LIGHT_SOURCE_ALL_TESSELATED_VERTICES_COUNT];
+            light_source_vertices = new TexturedVertex[LIGHT_SOURCE_ALL_TESSELATED_VERTICES_COUNT];
             light_source_indices = new Index[LIGHT_SOURCE_ALL_TESSELATED_INDICES_COUNT];
 
             pyramid(LIGHT_SOURCE_RADIUS*LIGHT_SOURCE_RADIUS, light_source_vertices, light_source_indices, D3DCOLOR_XRGB(0,0,0) /* ignored */, LIGHT_SOURCE_TESSELATE_DEGREE);

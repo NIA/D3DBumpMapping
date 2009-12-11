@@ -59,24 +59,24 @@ private:
     Model &operator=(const Model&);
 };
 
-class MorphingModel : public Model
+class TexturedMorphingModel : public Model
 {
 private:
     float morphing_param;
     float final_radius;
 public:
-    MorphingModel(  IDirect3DDevice9 *device,
-                    D3DPRIMITIVETYPE primitive_type,
-                    VertexShader &shader,
-                    VertexShader &shadow_shader,
-                    const Vertex *vertices,
-                    unsigned vertices_count,
-                    const Index *indices,
-                    unsigned indices_count,
-                    unsigned primitives_count,
-                    D3DXVECTOR3 position,
-                    D3DXVECTOR3 rotation,
-                    float final_radius);
+    TexturedMorphingModel(  IDirect3DDevice9 *device,
+                            D3DPRIMITIVETYPE primitive_type,
+                            VertexShader &shader,
+                            VertexShader &shadow_shader,
+                            const TexturedVertex *vertices,
+                            unsigned vertices_count,
+                            const Index *indices,
+                            unsigned indices_count,
+                            unsigned primitives_count,
+                            D3DXVECTOR3 position,
+                            D3DXVECTOR3 rotation,
+                            float final_radius);
 
     // Overrides:
     virtual void set_time(float time);
@@ -111,7 +111,7 @@ public:
     LightSource( IDirect3DDevice9 *device,
                  D3DPRIMITIVETYPE primitive_type,
                  VertexShader &shader,
-                 const Vertex *vertices,
+                 const TexturedVertex *vertices,
                  unsigned vertices_count,
                  const Index *indices,
                  unsigned indices_count,

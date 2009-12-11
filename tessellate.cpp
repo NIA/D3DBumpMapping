@@ -1,7 +1,21 @@
 #include "tessellate.h"
 
-void tessellate(const Vertex *src_vertices, const Index *src_indices, DWORD src_index_offset,
-                Vertex *res_vertices, Index res_vertices_offset, Index *res_indices, D3DCOLOR color, DWORD tesselate_degree)
+namespace
+{
+    const float U_OFFSETS[PLANES_PER_PYRAMID/2] = {0, 0.5f, 0.5f, 1};
+    const float U_SHIFTS_WHEN_X_IS_0[PLANES_PER_PYRAMID/2] = {1.0f/4, -1.0f/4, 1.0f/4, -1.0f/4};
+    const float V_OFFSETS[2] = {0, 1.0f};
+
+    const float EPSILON = 1e-4f;
+    bool is_zero(float a)
+    {
+        return abs(a) < EPSILON;
+    }
+}
+
+void tessellate(const TexturedVertex *src_vertices, const Index *src_indices, DWORD src_index_offset,
+                TexturedVertex *res_vertices, Index res_vertices_offset, Index *res_indices,
+                D3DCOLOR color, DWORD tesselate_degree, unsigned quater, unsigned half)
 // Divides each side of triangle into given number of parts
 // Writes data into arrays given as `res_vertices' and `res_indices',
 //   assuming that there are already `res_vertices_offset' vertices before `res_vertices' pointer.
@@ -32,11 +46,19 @@ void tessellate(const Vertex *src_vertices, const Index *src_indices, DWORD src_
     {
         for( Index column = 0; column < line + 1; ++column ) // line #1 contains 2 vertices
         {
-            res_vertices[vertex] = Vertex( start_pos
-                                             + static_cast<FLOAT>(line)*step_down
-                                             + static_cast<FLOAT>(column)*step_right,
-                                           color,
-                                           normal);
+            D3DXVECTOR3 position = start_pos
+                                 + static_cast<FLOAT>(line)*step_down
+                                 + static_cast<FLOAT>(column)*step_right;
+            
+            D3DXVECTOR3 normalized_position;
+            D3DXVec3Normalize(&normalized_position, &position);
+            float x = normalized_position.x;
+            float y = normalized_position.y;
+            float z = normalized_position.z;
+            float u = ( is_zero(x) ? U_SHIFTS_WHEN_X_IS_0[quater] : atan( y/x )/D3DX_PI/2 ) + U_OFFSETS[quater];
+            float v = is_zero(z) ? 0.5f : (atan( sqrt(x*x + y*y)/z )/D3DX_PI  + V_OFFSETS[half]);
+            
+            res_vertices[vertex] = TexturedVertex( position, color, normal, u, v );
             if( column != 0 ) // not first coumn
             {
                 // add outer triangle

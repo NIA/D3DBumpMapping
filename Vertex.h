@@ -44,6 +44,17 @@ public:
     }
 };
 
+class TexturedVertex : public Vertex
+{
+public:
+    float u, v;                 // The texture coordinates
+    TexturedVertex() : u(0), v(0) {}
+    TexturedVertex(D3DXVECTOR3 pos, D3DCOLOR color, D3DXVECTOR3 normal, float u, float v)
+        : Vertex(pos, color, normal), u(u), v(v) {}
+    TexturedVertex(D3DXVECTOR3 pos, D3DXVECTOR3 normal, float u, float v)
+        : Vertex(pos, normal), u(u), v(v) {}
+};
+
 // a helper for generation functions (tesselate() and plane())
 inline void add_triangle( Index i1, Index i2, Index i3, Index *indices, DWORD &current_index, Index offset = 0 )
 {
@@ -53,3 +64,4 @@ inline void add_triangle( Index i1, Index i2, Index i3, Index *indices, DWORD &c
 }
 
 extern const D3DVERTEXELEMENT9 VERTEX_DECL_ARRAY[];
+extern const D3DVERTEXELEMENT9 TEXTURED_VERTEX_DECL_ARRAY[];

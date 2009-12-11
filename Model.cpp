@@ -104,20 +104,21 @@ Model::~Model()
 
 // -------------------------------------- MorphingModel -------------------------------------------------------------
 
-MorphingModel::MorphingModel(IDirect3DDevice9 *device, D3DPRIMITIVETYPE primitive_type, VertexShader &shader, VertexShader &shadow_shader,
-                             const Vertex *vertices, unsigned int vertices_count, const Index *indices, unsigned int indices_count,
-                             unsigned int primitives_count, D3DXVECTOR3 position, D3DXVECTOR3 rotation, float final_radius)
-: Model(device, primitive_type, shader, shadow_shader, sizeof(Vertex), vertices, vertices_count, indices, indices_count, primitives_count, position, rotation),
+TexturedMorphingModel::TexturedMorphingModel
+    (IDirect3DDevice9 *device, D3DPRIMITIVETYPE primitive_type, VertexShader &shader, VertexShader &shadow_shader,
+     const TexturedVertex *vertices, unsigned int vertices_count, const Index *indices, unsigned int indices_count,
+     unsigned int primitives_count, D3DXVECTOR3 position, D3DXVECTOR3 rotation, float final_radius)
+: Model(device, primitive_type, shader, shadow_shader, sizeof(TexturedVertex), vertices, vertices_count, indices, indices_count, primitives_count, position, rotation),
   morphing_param(1), final_radius(final_radius)
 {
 }
 
-void MorphingModel::set_time(float time)
+void TexturedMorphingModel::set_time(float time)
 {
-    morphing_param = (-cos(MORPHING_OMEGA*time) + 1.0f)/2.0f; // parameter of morhing: 0 to 1
+    morphing_param = 1;//(-cos(MORPHING_OMEGA*time) + 1.0f)/2.0f; // parameter of morhing: 0 to 1
 }
 
-unsigned MorphingModel::set_constants(D3DXVECTOR4 *out_data, unsigned buffer_size) const
+unsigned TexturedMorphingModel::set_constants(D3DXVECTOR4 *out_data, unsigned buffer_size) const
 // returns number of constant registers used
 {
     _ASSERT( buffer_size >= MORPHING_CONSTANTS_USED); // enough space?
@@ -175,10 +176,10 @@ D3DXMATRIX Plane::get_projection_matrix(const D3DXVECTOR3 light_position) const
     return -( M1 - M2 + M3 + Mz );
 }
 
-LightSource::LightSource( IDirect3DDevice9 *device, D3DPRIMITIVETYPE primitive_type, VertexShader &shader, const Vertex *vertices,
+LightSource::LightSource( IDirect3DDevice9 *device, D3DPRIMITIVETYPE primitive_type, VertexShader &shader, const TexturedVertex *vertices,
                           unsigned vertices_count, const Index *indices, unsigned indices_count, unsigned primitives_count,
                           D3DXVECTOR3 position, D3DXVECTOR3 rotation, float radius )
-: Model(device, primitive_type, shader, shader, sizeof(Vertex), vertices, vertices_count, indices, indices_count,
+: Model(device, primitive_type, shader, shader, sizeof(TexturedVertex), vertices, vertices_count, indices, indices_count,
         primitives_count, position, rotation), radius(radius)
 {}
 

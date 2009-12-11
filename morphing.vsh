@@ -1,6 +1,7 @@
 vs_1_1
 dcl_position v0
 dcl_color v1
+dcl_texcoord v2
 dcl_normal v3
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -124,5 +125,6 @@ add r6, r6, c15         ; r6 += I(ambient)
 
 ;;;;;;;;;;;;;;;;;;;;;;;; Results ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 m4x4 oPos, r1, c0
-mov oD0, v1
-mul oD0, v1, r6
+mov oD0.rg, v2.xy
+mov oD0.ba, c100.ba
+;mul oD0, v1, r6

@@ -14,5 +14,6 @@ inline DWORD tesselated_indices_count(DWORD tessellate_degree)
 // Divides each side of triangle into given number of parts
 // Writes data into arrays given as `res_vertices' and `res_indices',
 //   assuming that there are already `res_vertices_offset' vertices before `res_vertices' pointer.
-void tessellate(const Vertex *src_vertices, const Index *src_indices, DWORD src_index_offset,
-                Vertex *res_vertices, Index res_vertices_offset, Index *res_indices, D3DCOLOR color, DWORD tesselate_degree);
+void tessellate(const TexturedVertex *src_vertices, const Index *src_indices, DWORD src_index_offset,
+                TexturedVertex *res_vertices, Index res_vertices_offset, Index *res_indices,
+                D3DCOLOR color, DWORD tesselate_degree, unsigned quater, unsigned half);
