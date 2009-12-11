@@ -2,6 +2,8 @@
 
 namespace
 {
+    const float TEXTURE_REPEATS = 1;
+
     const float U_OFFSETS[PLANES_PER_PYRAMID/2] = {0, 0.5f, 0.5f, 1};
     const float U_SHIFTS_WHEN_X_IS_0[PLANES_PER_PYRAMID/2] = {1.0f/4, -1.0f/4, 1.0f/4, -1.0f/4};
     const float V_OFFSETS[2] = {0, 1.0f};
@@ -35,14 +37,11 @@ void tessellate(const TexturedVertex *src_vertices, const Index *src_indices, DW
     D3DXVec3Cross(&normal, &step_down, &step_right);
     D3DXVec3Normalize(&normal, &normal);
 
-    res_vertices[0] = src_vertices[i2];
-    res_vertices[0].set_normal(normal);
-    res_vertices[0].color = color;
-    Index vertex = 1; // current vertex
+    D3DXVECTOR3 start_pos = src_vertices[i2].pos;
+    Index vertex = 0; // current vertex
     DWORD index = 0; // current index
     
-    D3DXVECTOR3 start_pos = res_vertices[0].pos;
-    for( Index line = 1; line <= tesselate_degree; ++line )
+    for( Index line = 0; line <= tesselate_degree; ++line )
     {
         for( Index column = 0; column < line + 1; ++column ) // line #1 contains 2 vertices
         {
@@ -58,7 +57,7 @@ void tessellate(const TexturedVertex *src_vertices, const Index *src_indices, DW
             float u = ( is_zero(x) ? U_SHIFTS_WHEN_X_IS_0[quater] : atan( y/x )/D3DX_PI/2 ) + U_OFFSETS[quater];
             float v = is_zero(z) ? 0.5f : (atan( sqrt(x*x + y*y)/z )/D3DX_PI  + V_OFFSETS[half]);
             
-            res_vertices[vertex] = TexturedVertex( position, color, normal, u, v );
+            res_vertices[vertex] = TexturedVertex( position, color, normal, TEXTURE_REPEATS*u, TEXTURE_REPEATS*v );
             if( column != 0 ) // not first coumn
             {
                 // add outer triangle

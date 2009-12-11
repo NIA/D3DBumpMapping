@@ -8,7 +8,6 @@ Texture::Texture(IDirect3DDevice9 *device, const char *filename)
     device->SetTextureStageState(0, D3DTSS_COLORARG1,D3DTA_TEXTURE);
     device->SetTextureStageState(0, D3DTSS_COLORARG2,D3DTA_DIFFUSE);
     device->SetTextureStageState(0, D3DTSS_ALPHAOP,  D3DTOP_DISABLE);
-    //device->SetSamplerState( DWORD Sampler, D3DSAMPLERSTATETYPE Type, DWORD Value );
 }
 
 void Texture::set()
