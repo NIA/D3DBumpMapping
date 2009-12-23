@@ -103,6 +103,11 @@ void Application::init_device()
     set_render_state( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
     set_render_state( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
 
+    device->SetTextureStageState(0, D3DTSS_COLOROP,  D3DTOP_MODULATE);
+    device->SetTextureStageState(0, D3DTSS_COLORARG1,D3DTA_TEXTURE);
+    device->SetTextureStageState(0, D3DTSS_COLORARG2,D3DTA_DIFFUSE);
+    device->SetTextureStageState(0, D3DTSS_ALPHAOP,  D3DTOP_DISABLE);
+
     toggle_wireframe();
 }
 
@@ -178,7 +183,6 @@ void Application::render()
     
     // Present the backbuffer contents to the display
     check_render( device->Present( NULL, NULL, NULL, NULL ) );
-
 }
 
 IDirect3DDevice9 * Application::get_device()

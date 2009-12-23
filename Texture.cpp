@@ -3,16 +3,18 @@
 Texture::Texture(IDirect3DDevice9 *device, const char *filename)
 : device(device), texture(NULL)
 {
-    D3DXCreateTextureFromFileA(device, filename, &texture);
-    device->SetTextureStageState(0, D3DTSS_COLOROP,  D3DTOP_MODULATE);
-    device->SetTextureStageState(0, D3DTSS_COLORARG1,D3DTA_TEXTURE);
-    device->SetTextureStageState(0, D3DTSS_COLORARG2,D3DTA_DIFFUSE);
-    device->SetTextureStageState(0, D3DTSS_ALPHAOP,  D3DTOP_DISABLE);
+    check_texture( D3DXCreateTextureFromFileA(device, filename, &texture) );
 }
 
-void Texture::set()
+
+void Texture::set(unsigned samler_index /*= 0*/)
 {
-    device->SetTexture(0, texture);
+    check_texture( device->SetTexture(samler_index, texture) );
+}
+
+void Texture::unset(unsigned samler_index /*= 0*/)
+{
+    check_texture( device->SetTexture(samler_index, NULL) );
 }
 
 Texture::~Texture()

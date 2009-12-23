@@ -91,6 +91,11 @@ class PixelShaderInitError : public RuntimeError
 public:
     PixelShaderInitError() : RuntimeError( _T("Error while creating pixel shader") ) {}
 };
+class TextureError : public RuntimeError
+{
+public:
+    TextureError() : RuntimeError( _T("Error while creating, configuring or setting texture") ) {}
+};
 
 inline void check_render( HRESULT res )
 {
@@ -102,4 +107,10 @@ inline void check_state( HRESULT res )
 {
     if( FAILED(res) )
         throw RenderStateError();
+}
+
+inline void check_texture( HRESULT res )
+{
+    if( FAILED(res) )
+        throw TextureError();
 }

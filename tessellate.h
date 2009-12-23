@@ -16,4 +16,5 @@ inline DWORD tesselated_indices_count(DWORD tessellate_degree)
 //   assuming that there are already `res_vertices_offset' vertices before `res_vertices' pointer.
 void tessellate(const TexturedVertex *src_vertices, const Index *src_indices, DWORD src_index_offset,
                 TexturedVertex *res_vertices, Index res_vertices_offset, Index *res_indices,
-                D3DCOLOR color, DWORD tesselate_degree, unsigned quater, unsigned half);
+                D3DCOLOR color, DWORD tesselate_degree, unsigned quater, unsigned half,
+                bool make_sphere = false, float final_radius = 1.0f);

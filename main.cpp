@@ -6,13 +6,13 @@
 
 namespace
 {
-    const char *MORPHING_SHADER_FILENAME = "morphing.vsh";
-    const char *MORPHING_SHADOW_SHADER_FILENAME = "morphing_shadow.vsh";
+    const char *SPHERE_SHADER_FILENAME = "sphere.vsh";
+    const char *SPHERE_SHADOW_SHADER_FILENAME = "sphere_shadow.vsh";
     const char *PLANE_SHADER_FILENAME = "plane.vsh";
     const char *LIGHT_SOURCE_SHADER_FILENAME = "light_source.vsh";
-    const char *SPHERE_SHADER_FILENAME = "sphere.psh";
+    const char *SPHERE_PIXEL_SHADER_FILENAME = "sphere.psh";
 
-    const char *SPHERE_TEXTURE_FILENAME = "nia.jpg";//"brickdiff.tga";
+    const char *SPHERE_TEXTURE_FILENAME = "brickdiff.tga";//"nia.jpg";//
     const D3DCOLOR SPHERE_COLOR = D3DCOLOR_XRGB(255, 190, 0);
     const D3DCOLOR PLANE_COLOR = D3DCOLOR_XRGB(50,150,80);
 
@@ -45,12 +45,12 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, INT )
         {
             Application app;
 
-            VertexShader morphing_vertex_shader(app.get_device(), MORPHING_SHADER_FILENAME);
-            VertexShader morphing_shadow_vertex_shader(app.get_device(), MORPHING_SHADOW_SHADER_FILENAME);
+            VertexShader sphere_vertex_shader(app.get_device(), SPHERE_SHADER_FILENAME);
+            VertexShader sphere_shadow_vertex_shader(app.get_device(), SPHERE_SHADOW_SHADER_FILENAME);
             VertexShader plane_vertex_shader(app.get_device(), PLANE_SHADER_FILENAME);
             VertexShader light_source_vertex_shader(app.get_device(), LIGHT_SOURCE_SHADER_FILENAME);
             PixelShader no_pixel_shader(app.get_device());
-            PixelShader sphere_pixel_shader(app.get_device(), SPHERE_SHADER_FILENAME);
+            PixelShader sphere_pixel_shader(app.get_device(), SPHERE_PIXEL_SHADER_FILENAME);
 
             Texture sphere_texture(app.get_device(), SPHERE_TEXTURE_FILENAME);
             
@@ -58,12 +58,12 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, INT )
             sphere_vertices = new TexturedVertex[SPHERE_ALL_TESSELATED_VERTICES_COUNT];
             sphere_indices = new Index[SPHERE_ALL_TESSELATED_INDICES_COUNT];
 
-            pyramid(SPHERE_RADIUS*sqrt(2.0f), sphere_vertices, sphere_indices, SPHERE_COLOR, SPHERE_TESSELATE_DEGREE);
+            pyramid(SPHERE_RADIUS*sqrt(2.0f), sphere_vertices, sphere_indices, SPHERE_COLOR, SPHERE_TESSELATE_DEGREE, true, SPHERE_RADIUS);
             
-            TexturedMorphingModel sphere( app.get_device(),
+            TexturedModel sphere( app.get_device(),
                                   D3DPT_TRIANGLELIST,
-                                  morphing_vertex_shader,
-                                  morphing_shadow_vertex_shader,
+                                  sphere_vertex_shader,
+                                  sphere_shadow_vertex_shader,
                                   sphere_pixel_shader,
                                   no_pixel_shader,
                                   sphere_vertices,
@@ -73,7 +73,6 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, INT )
                                   SPHERE_ALL_TESSELATED_INDICES_COUNT/VERTICES_PER_TRIANGLE,
                                   D3DXVECTOR3(0, 0, 0),
                                   D3DXVECTOR3(0,0,0),
-                                  SPHERE_RADIUS,
                                   sphere_texture);
 
             // ----------------------------- P l a n e --------------------------

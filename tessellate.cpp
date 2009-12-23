@@ -17,7 +17,8 @@ namespace
 
 void tessellate(const TexturedVertex *src_vertices, const Index *src_indices, DWORD src_index_offset,
                 TexturedVertex *res_vertices, Index res_vertices_offset, Index *res_indices,
-                D3DCOLOR color, DWORD tesselate_degree, unsigned quater, unsigned half)
+                D3DCOLOR color, DWORD tesselate_degree, unsigned quater, unsigned half,
+                bool make_sphere /*= false*/, float final_radius /*= 1.0f*/)
 // Divides each side of triangle into given number of parts
 // Writes data into arrays given as `res_vertices' and `res_indices',
 //   assuming that there are already `res_vertices_offset' vertices before `res_vertices' pointer.
@@ -48,6 +49,11 @@ void tessellate(const TexturedVertex *src_vertices, const Index *src_indices, DW
             D3DXVECTOR3 position = start_pos
                                  + static_cast<FLOAT>(line)*step_down
                                  + static_cast<FLOAT>(column)*step_right;
+            if( make_sphere )
+            {
+                D3DXVec3Normalize(&position, &position);
+                position = position * final_radius;
+            }
             
             D3DXVECTOR3 normalized_position;
             D3DXVec3Normalize(&normalized_position, &position);

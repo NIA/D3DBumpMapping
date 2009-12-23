@@ -21,6 +21,14 @@ inline D3DCOLOR random_color()
     return D3DCOLOR_XRGB( rand_col_comp(), rand_col_comp(), rand_col_comp() );
 }
 
+// a helper for generation functions (tesselate() and plane())
+inline void add_triangle( Index i1, Index i2, Index i3, Index *indices, DWORD &current_index, Index offset = 0 )
+{
+    indices[current_index++] = i1 + offset;
+    indices[current_index++] = i2 + offset;
+    indices[current_index++] = i3 + offset;
+}
+
 //////////////////////////// D E C L A R A T I O N ///////////////////////////////////////////////
 extern const D3DVERTEXELEMENT9 VERTEX_DECL_ARRAY[];
 extern const D3DVERTEXELEMENT9 TEXTURED_VERTEX_DECL_ARRAY[];
@@ -82,11 +90,3 @@ public:
         return decl;
     }
 };
-
-// a helper for generation functions (tesselate() and plane())
-inline void add_triangle( Index i1, Index i2, Index i3, Index *indices, DWORD &current_index, Index offset = 0 )
-{
-    indices[current_index++] = i1 + offset;
-    indices[current_index++] = i2 + offset;
-    indices[current_index++] = i3 + offset;
-}

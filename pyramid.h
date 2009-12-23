@@ -13,4 +13,5 @@ inline DWORD pyramid_indices_count(DWORD tessellate_degree)
 }
 
 void pyramid( float side, TexturedVertex *res_vertices, Index *res_indices,
-              D3DCOLOR color, DWORD tesselate_degree );
+              D3DCOLOR color, DWORD tesselate_degree,
+              bool make_sphere = false, float final_radius = 1.0f);

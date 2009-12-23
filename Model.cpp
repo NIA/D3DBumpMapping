@@ -3,10 +3,6 @@
 
 namespace
 {
-    const float MORPHING_PERIOD = 3.0f;
-    const float MORPHING_OMEGA = 2.0f*D3DX_PI/MORPHING_PERIOD;
-
-    const unsigned MORPHING_CONSTANTS_USED = 2; // final radius and t
     const unsigned LIGHT_SOURCE_CONSTANTS_USED = 1; // radius
 }
 
@@ -96,29 +92,15 @@ Model::~Model()
     release_interfaces();
 }
 
-// -------------------------------------- TexturedMorphingModel -------------------------------------------------------------
+// -------------------------------------- TexturedModel -------------------------------------------------------------
 
-TexturedMorphingModel::TexturedMorphingModel
+TexturedModel::TexturedModel
     (IDirect3DDevice9 *device, D3DPRIMITIVETYPE primitive_type, VertexShader &vertex_shader, VertexShader &shadow_vertex_shader, PixelShader &pixel_shader, PixelShader &shadow_pixel_shader,
      const TexturedVertex *vertices, unsigned int vertices_count, const Index *indices, unsigned int indices_count,
-     unsigned int primitives_count, D3DXVECTOR3 position, D3DXVECTOR3 rotation, float final_radius, Texture &texture)
+     unsigned int primitives_count, D3DXVECTOR3 position, D3DXVECTOR3 rotation, Texture &texture)
 : Model(device, primitive_type, vertex_shader, shadow_vertex_shader, pixel_shader, shadow_pixel_shader, TexturedVertex::get_declaration(device), sizeof(TexturedVertex), vertices, vertices_count, indices, indices_count, primitives_count, position, rotation),
-  morphing_param(1), final_radius(final_radius), texture(texture)
+  texture(texture)
 {
-}
-
-void TexturedMorphingModel::set_time(float time)
-{
-    morphing_param = 1;//(-cos(MORPHING_OMEGA*time) + 1.0f)/2.0f; // parameter of morhing: 0 to 1
-}
-
-unsigned TexturedMorphingModel::set_constants(D3DXVECTOR4 *out_data, unsigned buffer_size) const
-// returns number of constant registers used
-{
-    _ASSERT( buffer_size >= MORPHING_CONSTANTS_USED); // enough space?
-    out_data[0] = D3DXVECTOR4(final_radius, final_radius, final_radius, final_radius);
-    out_data[1] = D3DXVECTOR4(morphing_param, morphing_param, morphing_param, morphing_param);
-    return MORPHING_CONSTANTS_USED;
 }
 
 // ------------------------------------------ Plane --------------------------------------------------------
@@ -134,7 +116,7 @@ Plane::Plane( IDirect3DDevice9 *device, D3DPRIMITIVETYPE primitive_type, VertexS
     D3DXMATRIX rotation_mx = rotate_matrix(rotation);
     D3DXVec4Transform( &normal_4d, &normal_4d, &rotation_mx );
 
-    normal = D3DXVECTOR3( normal_4d ); // TODO: Why minus??
+    normal = D3DXVECTOR3( normal_4d );
 
     d = D3DXVec3Dot( &position, &normal );
 }
@@ -180,7 +162,7 @@ LightSource::LightSource( IDirect3DDevice9 *device, D3DPRIMITIVETYPE primitive_t
 unsigned LightSource::set_constants(D3DXVECTOR4 *out_data, unsigned buffer_size) const
 // returns number of constant registers used
 {
-    _ASSERT( buffer_size >= MORPHING_CONSTANTS_USED); // enough space?
+    _ASSERT( buffer_size >= LIGHT_SOURCE_CONSTANTS_USED); // enough space?
     out_data[0] = D3DXVECTOR4(radius, radius, radius, radius);
     return LIGHT_SOURCE_CONSTANTS_USED;
 }

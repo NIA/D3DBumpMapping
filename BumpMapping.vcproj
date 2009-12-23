@@ -302,19 +302,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\morphing.vsh"
-				>
-			</File>
-			<File
-				RelativePath=".\morphing_shadow.vsh"
-				>
-			</File>
-			<File
 				RelativePath=".\plane.vsh"
 				>
 			</File>
 			<File
 				RelativePath=".\sphere.psh"
+				>
+			</File>
+			<File
+				RelativePath=".\sphere.vsh"
+				>
+			</File>
+			<File
+				RelativePath=".\sphere_shadow.vsh"
 				>
 			</File>
 		</Filter>
