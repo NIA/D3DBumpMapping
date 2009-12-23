@@ -52,6 +52,13 @@ namespace
     //    c35 are attenuation constants
     const unsigned    SHADER_REG_SHADOW_ATTENUATION = 35;
     const D3DXVECTOR3 SHADER_VAL_SHADOW_ATTENUATION  (0.8f, 0, 0.1f);
+    //---------------- PIXEL SHADER CONSTANTS ---------------------------
+    //    c2 is ambient color
+    const unsigned    PIXEL_SHADER_REG_AMBIENT_COLOR = 2;
+    //    c3 is point color * diff.coef
+    const unsigned    PIXEL_SHADER_REG_POINT_DIFF_COLOR = 3;
+    //    c4 is point color * spec.coef
+    const unsigned    PIXEL_SHADER_REG_POINT_SPEC_COLOR = 4;
 }
 
 Application::Application() :
@@ -152,6 +159,11 @@ void Application::render()
     set_shader_point ( SHADER_REG_EYE,            camera.get_eye()          );
     set_shader_matrix( SHADER_REG_SHADOW_PROJ_MX, shadow_proj_matrix        );
     set_shader_vector( SHADER_REG_SHADOW_ATTENUATION, SHADER_VAL_SHADOW_ATTENUATION );
+
+    set_pixel_shader_color ( PIXEL_SHADER_REG_AMBIENT_COLOR,    ambient_color                         );
+    D3DXCOLOR point_xcolor( point_color );
+    set_pixel_shader_xcolor( PIXEL_SHADER_REG_POINT_DIFF_COLOR, point_xcolor*SHADER_VAL_DIFFUSE_COEF  );
+    set_pixel_shader_xcolor( PIXEL_SHADER_REG_POINT_SPEC_COLOR, point_xcolor*SHADER_VAL_SPECULAR_COEF );
 
     // Draw Light Source
     draw_model( light_source, time, false );

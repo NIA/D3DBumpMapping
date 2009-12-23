@@ -1,7 +1,22 @@
 ps_1_4
-def c0, 0.0, 0.0, 0.0, 0.0
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; c0 is constant 0.0               ;;
+;; c1 is N in {T,B,N} basis         ;;
+;; c2 is ambient color              ;;
+;; c3 is point color * diff.coef    ;;
+;; c4 is point color * spec.coef    ;;
+;;                                  ;;
+;; r2(t2) is vector to eye          ;;
+;; r3(t3) is vector to light        ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-texld r0, t0
-texcrd r2.xyz, t2.xyz
-mov r2.w, c0.w
-mov r0, r2
+def c0, 0.0, 0.0, 0.0, 0.0
+def c1, 0.0, 0.0, 1.0, 0.0 ; normal in tangent-space basis
+
+texld r0, t0               ; r0 = texture[ t0 ]
+texcrd r2.xyz, t2.xyz      ; r2 = vector to eye (v)
+texcrd r3.xyz, t3.xyz      ; r3 = vector to light (l)
+
+dp3_sat r4, r3, c1         ; r4 = cos( l, n )
+mad r4, r4, c3, c2         ; r4 = point_diffuse * cos( l, n ) + ambient
+mul r0, r0, r4             ; r0 = texture_color * light

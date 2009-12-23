@@ -84,6 +84,11 @@ add r11, c17, -r1       ; r11 = position(point) - position(vertex)
 dp3 r2, r11, r11        ; r2 = distance**2
 rsq r7, r2              ; r7 = 1/distance
 mul r11, r11, r7.x      ; normalize r11
+; transforming direction vector into tangent space
+dp3 oT3.x, r11, v5
+dp3 oT3.y, r11, v4
+dp3 oT3.z, r11, v3
+mov oT3.w, c100.w
 ; calculating cos(theta)
 dp3 r5, r11, r10        ; r5 = cos(theta)
 ; calculating attenuation
