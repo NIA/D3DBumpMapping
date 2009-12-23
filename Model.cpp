@@ -1,6 +1,10 @@
 #include "Model.h"
 #include "matrices.h"
 
+
+const unsigned DIFF_TEXTURE_SAMPLER = 0;
+const unsigned NORMALS_TEXTURE_SAMPLER = 1;
+
 namespace
 {
     const unsigned LIGHT_SOURCE_CONSTANTS_USED = 1; // radius
@@ -97,9 +101,9 @@ Model::~Model()
 TexturedModel::TexturedModel
     (IDirect3DDevice9 *device, D3DPRIMITIVETYPE primitive_type, VertexShader &vertex_shader, VertexShader &shadow_vertex_shader, PixelShader &pixel_shader, PixelShader &shadow_pixel_shader,
      const TexturedVertex *vertices, unsigned int vertices_count, const Index *indices, unsigned int indices_count,
-     unsigned int primitives_count, D3DXVECTOR3 position, D3DXVECTOR3 rotation, Texture &texture)
+     unsigned int primitives_count, D3DXVECTOR3 position, D3DXVECTOR3 rotation, Texture &texture, Texture &normals_texture)
 : Model(device, primitive_type, vertex_shader, shadow_vertex_shader, pixel_shader, shadow_pixel_shader, TexturedVertex::get_declaration(device), sizeof(TexturedVertex), vertices, vertices_count, indices, indices_count, primitives_count, position, rotation),
-  texture(texture)
+  texture(texture), normals_texture(normals_texture)
 {
 }
 

@@ -11,7 +11,6 @@ namespace
     const D3DCOLOR    BLACK = D3DCOLOR_XRGB( 0, 0, 0 );
     const float       ROTATE_STEP = D3DX_PI/30.0f;
     const float       POINT_MOVING_STEP = 0.03f;
-    const char       *SHADOW_SHADER_FILENAME = "shadow.vsh";
     const DWORD       STENCIL_REF_VALUE = 50;
 
 

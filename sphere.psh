@@ -14,17 +14,19 @@ def c0, 0.0, 0.0, 0.0, 0.0
 def c1, 0.0, 0.0, 1.0, 0.0  ; normal in tangent-space basis
 
 texld r0, t0                ; r0 = texture[ t0 ]
+texld r1, t0                ; r1 = normals[ t0 ]
 texcrd r2.xyz, t2.xyz       ; r2 = vector to eye (v)
 texcrd r3.xyz, t3.xyz       ; r3 = vector to light (l)
 
-dp3_sat r4, r3, c1          ; r4 = cos( l, n )       // cos for diffuse
+dp3_sat r4, r3, r1_bx2       ; r4 = cos( l, n )       // cos for diffuse
 mad r4, r4, c3, c2          ; r4 = point_diffuse * cos( l, n ) + ambient
 
 phase
 texld r0, t0                ; r0 = texture[ t0 ]
+texld r1, t0                ; r1 = normals[ t0 ]
 
-dp3 r5, r3, c1              ; r5 = cos( l, n )       // cos for diffuse
-mad r5.xyz, r5_x2, c1, -r3  ; r5 = 2*(l, n)*n - l    // r for specular
+dp3 r5, r3, r1_bx2              ; r5 = cos( l, n )       // cos for diffuse
+mad r5.xyz, r5_x2, r1_bx2, -r3  ; r5 = 2*(l, n)*n - l    // r for specular
 dp3_sat r5, r2, r5          ; r5 = cos( v, r )       // cos for specular
 mul r5, r5, r5              ; r5 = r5 ^ f            // cos^f for specular
 mul r5, r5, r5

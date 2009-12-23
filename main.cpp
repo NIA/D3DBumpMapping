@@ -13,6 +13,7 @@ namespace
     const char *SPHERE_PIXEL_SHADER_FILENAME = "sphere.psh";
 
     const char *SPHERE_TEXTURE_FILENAME = "brickdiff.tga";//"nia.jpg";//
+    const char *SPHERE_NORMALS_TEXTURE_FILENAME = "brickbump.tga";
     const D3DCOLOR SPHERE_COLOR = D3DCOLOR_XRGB(255, 190, 0);
     const D3DCOLOR PLANE_COLOR = D3DCOLOR_XRGB(50,150,80);
 
@@ -53,6 +54,7 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, INT )
             PixelShader sphere_pixel_shader(app.get_device(), SPHERE_PIXEL_SHADER_FILENAME);
 
             Texture sphere_texture(app.get_device(), SPHERE_TEXTURE_FILENAME);
+            Texture sphere_normals(app.get_device(), SPHERE_NORMALS_TEXTURE_FILENAME);
             
             // -------------------------- P y r a m i d -----------------------
             sphere_vertices = new TexturedVertex[SPHERE_ALL_TESSELATED_VERTICES_COUNT];
@@ -73,7 +75,8 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, INT )
                                   SPHERE_ALL_TESSELATED_INDICES_COUNT/VERTICES_PER_TRIANGLE,
                                   D3DXVECTOR3(0, 0, 0),
                                   D3DXVECTOR3(0,0,0),
-                                  sphere_texture);
+                                  sphere_texture,
+                                  sphere_normals);
 
             // ----------------------------- P l a n e --------------------------
             plane_vertices = new Vertex[PLANE_VERTICES_COUNT];

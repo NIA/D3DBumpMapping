@@ -2,9 +2,9 @@ vs_1_1
 dcl_position v0
 dcl_color v1
 dcl_texcoord v2
-dcl_normal v3
+dcl_tangent v3
 dcl_binormal v4
-dcl_tangent v5
+dcl_normal v5
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; c0 - c3 is view matrix           ;;
@@ -61,7 +61,7 @@ def c111, 1.0, 1.0, 1.0, 1.0 ;constant one
 ; - - - - - - - - - -  position  - - - - - - - - - - - - - -;
 m4x4 r1, v0, c27        ; position and rotation
 ; - - - - - - - - - -  normals  - - - - - - - - - - - - - - ;
-m4x4 r10, v3, c27       ; rotation
+m4x4 r10, v5, c27       ; rotation
 
 
 ; calculating normalized v
@@ -71,13 +71,8 @@ rsq r7, r0             ; r7 = 1/distance
 mul r9, r9, r7.x       ; normalize r9
 
 ; transforming v into tangent space
-dp3 oT2.x, r9, v5
-dp3 oT2.y, r9, v4
-dp3 oT2.z, r9, v3
-;;dp3 oT2.x, r10, v5 ;transforming normal into tangent space for debug
-;;dp3 oT2.y, r10, v4
-;;dp3 oT2.z, r10, v3
-mov oT2.w, c100.w
+m3x3 oT2, r9, v3
+
 ;;;;;;;;;;;;;;;;;;;;;;;; Point ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; calculating normalized direction vector
 add r11, c17, -r1       ; r11 = position(point) - position(vertex)
@@ -85,47 +80,10 @@ dp3 r2, r11, r11        ; r2 = distance**2
 rsq r7, r2              ; r7 = 1/distance
 mul r11, r11, r7.x      ; normalize r11
 ; transforming direction vector into tangent space
-dp3 oT3.x, r11, v5
-dp3 oT3.y, r11, v4
-dp3 oT3.z, r11, v3
-mov oT3.w, c100.w
-; calculating cos(theta)
-dp3 r5, r11, r10        ; r5 = cos(theta)
-; calculating attenuation
-dst r2, r2, r7          ; r2 = (1, d, d**2, 1/d)
-dp3 r0, r2, c18         ; r0 = (a + b*d + c*d**2)
-rcp r0, r0              ; r0 = attenuation coef
-; - - - - - - - - - - - diffuse - - - - - - - - - - - - - - ;
-mul r4, c16, r5.x       ; r4 = I(point)*cos(theta)
-mul r4, r4, c14.x        ; r4 *= coef(diffuse)
-mul r4, r4, r0.x        ; r4 *= attenuation
-
-max r6, r4, c100        ; if some color comp. < 0 => make it == 0
-; - - - - - - - - - - - specular - - - - - - - - - - - - - -;
-; calculating r:
-mul r2, r10, r5.x   ; r2 = (l, n)*n
-add r2, r2, r2      ; r2 = 2*(l, n)*n
-add r2, r2, -r11    ; r2 = 2*(l, n)*n - l
-; calculating cos(phi)**f
-dp3 r8, r2, r9          ; r8 = cos(phi)
-max r8, r8, c100        ; if cos < 0, let it = 0
-mov r7.y, r8.x
-mov r7.w, c20.x
-lit r8, r7              ; r8.z = cos(phi)**f
-
-mul r4, c16, r8.z       ; r4 = I(point)*cos(phi)**f
-mul r4, r4, c19.x       ; r4 *= coef(specular)
-mul r4, r4, r0.x        ; r4 *= attenuation
-
-max r4, r4, c100        ; if some color comp. < 0 => make it == 0
-add r6, r6, r4
-
-;;;;;;;;;;;;;;;;;;;;;;; Ambient ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-add r6, r6, c15         ; r6 += I(ambient)
+m3x3 oT3, r11, v3
 
 ;;;;;;;;;;;;;;;;;;;;;;;; Results ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 m4x4 oPos, r1, c0
 mov oD0.rg, v2.xy
 mov oD0.ba, c100.ba
-;mul oD0, v1, r6
 mov oT0, v2

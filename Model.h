@@ -4,6 +4,9 @@
 #include "shaders.h"
 #include "Texture.h"
 
+extern const unsigned DIFF_TEXTURE_SAMPLER;
+extern const unsigned NORMALS_TEXTURE_SAMPLER;
+
 class Model
 {
 private:
@@ -76,6 +79,7 @@ class TexturedModel : public Model
 {
 private:
     Texture &texture;
+    Texture &normals_texture;
 public:
     TexturedModel(  IDirect3DDevice9 *device,
                     D3DPRIMITIVETYPE primitive_type,
@@ -90,15 +94,21 @@ public:
                     unsigned primitives_count,
                     D3DXVECTOR3 position,
                     D3DXVECTOR3 rotation,
-                    Texture &texture);
+                    Texture &texture,
+                    Texture &normals_texture);
 
     // Overrides:
     virtual void set_textures(bool shadow)
     {
         if(shadow)
+        {
             Model::set_textures(shadow);
+        }
         else
-            texture.set();
+        {
+            texture.set(DIFF_TEXTURE_SAMPLER);
+            normals_texture.set(NORMALS_TEXTURE_SAMPLER);
+        }
     }
 };
 

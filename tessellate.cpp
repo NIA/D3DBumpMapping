@@ -2,7 +2,7 @@
 
 namespace
 {
-    const float TEXTURE_REPEATS = 1;
+    const float TEXTURE_REPEATS = 3;
 
     const float U_OFFSETS[PLANES_PER_PYRAMID/2] = {0, 0.5f, 0.5f, 1};
     const float U_SHIFTS_WHEN_X_IS_0[PLANES_PER_PYRAMID/2] = {1.0f/4, -1.0f/4, 1.0f/4, -1.0f/4};
@@ -65,7 +65,7 @@ void tessellate(const TexturedVertex *src_vertices, const Index *src_indices, DW
             D3DXVECTOR3 normal;
             D3DXVec3Cross(&normal, &binormal, &tangent);
             
-            res_vertices[vertex] = TexturedVertex( position, color, normal, TEXTURE_REPEATS*u, TEXTURE_REPEATS*v, binormal, tangent );
+            res_vertices[vertex] = TexturedVertex( position, color, normal, TEXTURE_REPEATS*u, TEXTURE_REPEATS*v, -binormal, tangent ); // - binormal for our normal maps
             if( column != 0 ) // not first coumn
             {
                 // add outer triangle
