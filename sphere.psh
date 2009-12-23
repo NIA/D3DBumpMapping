@@ -11,12 +11,23 @@ ps_1_4
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 def c0, 0.0, 0.0, 0.0, 0.0
-def c1, 0.0, 0.0, 1.0, 0.0 ; normal in tangent-space basis
+def c1, 0.0, 0.0, 1.0, 0.0  ; normal in tangent-space basis
 
-texld r0, t0               ; r0 = texture[ t0 ]
-texcrd r2.xyz, t2.xyz      ; r2 = vector to eye (v)
-texcrd r3.xyz, t3.xyz      ; r3 = vector to light (l)
+texld r0, t0                ; r0 = texture[ t0 ]
+texcrd r2.xyz, t2.xyz       ; r2 = vector to eye (v)
+texcrd r3.xyz, t3.xyz       ; r3 = vector to light (l)
 
-dp3_sat r4, r3, c1         ; r4 = cos( l, n )
-mad r4, r4, c3, c2         ; r4 = point_diffuse * cos( l, n ) + ambient
-mul r0, r0, r4             ; r0 = texture_color * light
+dp3_sat r4, r3, c1          ; r4 = cos( l, n )       // cos for diffuse
+mad r4, r4, c3, c2          ; r4 = point_diffuse * cos( l, n ) + ambient
+
+phase
+texld r0, t0                ; r0 = texture[ t0 ]
+
+dp3 r5, r3, c1              ; r5 = cos( l, n )       // cos for diffuse
+mad r5.xyz, r5_x2, c1, -r3  ; r5 = 2*(l, n)*n - l    // r for specular
+dp3_sat r5, r2, r5          ; r5 = cos( v, r )       // cos for specular
+mul r5, r5, r5              ; r5 = r5 ^ f            // cos^f for specular
+mul r5, r5, r5
+mul r5, r5, r5
+mad r4.rgb, r5, c4, r4      ; r4 = point_specular * cos^f + diff_and_amb
+mul r0.rgb, r0, r4          ; r0 = texture_color * light

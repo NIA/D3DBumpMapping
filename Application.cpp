@@ -39,7 +39,7 @@ namespace
     const D3DXVECTOR3 SHADER_VAL_ATTENUATION  (1.0f, 0, 0.3f);
     //    c19 is specular coefficient
     const unsigned    SHADER_REG_SPECULAR_COEF = 19;
-    const float       SHADER_VAL_SPECULAR_COEF = 0.4f;
+    const float       SHADER_VAL_SPECULAR_COEF = 0.8f;
     //    c20 is specular constant 'f'
     const unsigned    SHADER_REG_SPECULAR_F = 20;
     const float       SHADER_VAL_SPECULAR_F = 35.0f;
