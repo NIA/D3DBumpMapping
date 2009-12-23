@@ -1,3 +1,7 @@
 ps_1_4
+def c0, 0.0, 0.0, 0.0, 0.0
 
 texld r0, t0
+texcrd r2.xyz, t2.xyz
+mov r2.w, c0.w
+mov r0, r2

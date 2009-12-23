@@ -8,13 +8,13 @@ void pyramid( float side, TexturedVertex *res_vertices, Index *res_indices,
     const float half_side = side/2.0f;
     const TexturedVertex pyramid_vertices[]=
     {
-        TexturedVertex( D3DXVECTOR3(  half_side,          0,  0.00f ), normal_up, 0, 0 ),
-        TexturedVertex( D3DXVECTOR3(          0,  half_side,  0.00f ), normal_up, 0, 0 ),
-        TexturedVertex( D3DXVECTOR3( -half_side,          0,  0.00f ), normal_up, 0, 0 ),
-        TexturedVertex( D3DXVECTOR3(          0, -half_side,  0.00f ), normal_up, 0, 0 ),
+        TexturedVertex( D3DXVECTOR3(  half_side,          0,  0.00f ), normal_up, 0, 0, normal_up, normal_up ),
+        TexturedVertex( D3DXVECTOR3(          0,  half_side,  0.00f ), normal_up, 0, 0, normal_up, normal_up ),
+        TexturedVertex( D3DXVECTOR3( -half_side,          0,  0.00f ), normal_up, 0, 0, normal_up, normal_up ),
+        TexturedVertex( D3DXVECTOR3(          0, -half_side,  0.00f ), normal_up, 0, 0, normal_up, normal_up ),
 
-        TexturedVertex( D3DXVECTOR3(  0.0f,  0.0f,  side/sqrt(2.0f) ), normal_up, 0, 0 ),
-        TexturedVertex( D3DXVECTOR3(  0.0f,  0.0f, -side/sqrt(2.0f) ), normal_up, 0, 0 ),
+        TexturedVertex( D3DXVECTOR3(  0.0f,  0.0f,  side/sqrt(2.0f) ), normal_up, 0, 0, normal_up, normal_up ),
+        TexturedVertex( D3DXVECTOR3(  0.0f,  0.0f, -side/sqrt(2.0f) ), normal_up, 0, 0, normal_up, normal_up ),
     };
     const Index pyramid_indices[PLANES_PER_PYRAMID*VERTICES_PER_TRIANGLE] =
     {

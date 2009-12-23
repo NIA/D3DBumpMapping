@@ -3,6 +3,8 @@ dcl_position v0
 dcl_color v1
 dcl_texcoord v2
 dcl_normal v3
+dcl_binormal v4
+dcl_tangent v5
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; c0 - c3 is view matrix           ;;
@@ -67,6 +69,15 @@ add r9, c21, -r1       ; r9 = position(eye) - position(vertex)
 dp3 r0, r9, r9         ; r0 = distance**2
 rsq r7, r0             ; r7 = 1/distance
 mul r9, r9, r7.x       ; normalize r9
+
+; transforming v into tangent space
+dp3 oT2.x, r9, v5
+dp3 oT2.y, r9, v4
+dp3 oT2.z, r9, v3
+;;dp3 oT2.x, r10, v5 ;transforming normal into tangent space for debug
+;;dp3 oT2.y, r10, v4
+;;dp3 oT2.z, r10, v3
+mov oT2.w, c100.w
 ;;;;;;;;;;;;;;;;;;;;;;;; Point ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; calculating normalized direction vector
 add r11, c17, -r1       ; r11 = position(point) - position(vertex)

@@ -34,9 +34,6 @@ void tessellate(const TexturedVertex *src_vertices, const Index *src_indices, DW
     const Index i3 = src_indices[src_index_offset + 2];
     const D3DXVECTOR3 step_down = (src_vertices[i1].pos - src_vertices[i2].pos)/static_cast<float>(tesselate_degree);
     const D3DXVECTOR3 step_right = (src_vertices[i3].pos - src_vertices[i1].pos)/static_cast<float>(tesselate_degree);
-    D3DXVECTOR3 normal;
-    D3DXVec3Cross(&normal, &step_down, &step_right);
-    D3DXVec3Normalize(&normal, &normal);
 
     D3DXVECTOR3 start_pos = src_vertices[i2].pos;
     Index vertex = 0; // current vertex
@@ -62,8 +59,13 @@ void tessellate(const TexturedVertex *src_vertices, const Index *src_indices, DW
             float z = normalized_position.z;
             float u = ( is_zero(x) ? U_SHIFTS_WHEN_X_IS_0[quater] : atan( y/x )/D3DX_PI/2 ) + U_OFFSETS[quater];
             float v = is_zero(z) ? 0.5f : (atan( sqrt(x*x + y*y)/z )/D3DX_PI  + V_OFFSETS[half]);
+
+            D3DXVECTOR3 binormal( cos(D3DX_PI*v)*cos(2*D3DX_PI*u), cos(D3DX_PI*v)*sin(2*D3DX_PI*u), -sin(D3DX_PI*v) );
+            D3DXVECTOR3 tangent( -sin(2*D3DX_PI*u), cos(2*D3DX_PI*u),  0 );
+            D3DXVECTOR3 normal;
+            D3DXVec3Cross(&normal, &binormal, &tangent);
             
-            res_vertices[vertex] = TexturedVertex( position, color, normal, TEXTURE_REPEATS*u, TEXTURE_REPEATS*v );
+            res_vertices[vertex] = TexturedVertex( position, color, normal, TEXTURE_REPEATS*u, TEXTURE_REPEATS*v, binormal, tangent );
             if( column != 0 ) // not first coumn
             {
                 // add outer triangle

@@ -79,11 +79,14 @@ class TexturedVertex : public Vertex
 {
 public:
     float u, v;                 // The texture coordinates
+    D3DXVECTOR4 binormal;
+    D3DXVECTOR4 tangent;
+
     TexturedVertex() : u(0), v(0) {}
-    TexturedVertex(D3DXVECTOR3 pos, D3DCOLOR color, D3DXVECTOR3 normal, float u, float v)
-        : Vertex(pos, color, normal), u(u), v(v) {}
-    TexturedVertex(D3DXVECTOR3 pos, D3DXVECTOR3 normal, float u, float v)
-        : Vertex(pos, normal), u(u), v(v) {}
+    TexturedVertex(D3DXVECTOR3 pos, D3DCOLOR color, D3DXVECTOR3 normal, float u, float v, D3DXVECTOR3 _binormal, D3DXVECTOR3 _tangent)
+        : Vertex(pos, color, normal), u(u), v(v), binormal(_binormal, 0), tangent(_tangent, 0) {}
+    TexturedVertex(D3DXVECTOR3 pos, D3DXVECTOR3 normal, float u, float v, D3DXVECTOR3 _binormal, D3DXVECTOR3 _tangent)
+        : Vertex(pos, normal), u(u), v(v), binormal(_binormal, 0), tangent(_tangent, 0) {}
     static VertexDeclaration &get_declaration(IDirect3DDevice9 *device)
     {
         static VertexDeclaration decl(device, TEXTURED_VERTEX_DECL_ARRAY);
