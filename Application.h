@@ -33,6 +33,8 @@ private:
 
     D3DXVECTOR3 point_light_position;
 
+    CubeTexture *normalization_texture;
+
     // Initialization steps:
     void init_device();
 

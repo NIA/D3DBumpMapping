@@ -16,24 +16,24 @@ def c5, -0.05, 0.05, 0, 0
 
 texcrd r0.xyz, t0.xyz           ; r0 = t0
 texld r1, t0                    ; r1 = normals[ t0 ]
-texcrd r2.xyz, t2.xyz           ; r2 = vector to eye (v)
+texld r2, t2.xyz                ; r2 = normalized vector to eye (v)
 
 mul r3.xyz, c5, r1.a
-mad r0.xyz, r2, r3, r0          ; r0 = t0 + parallax shift
+mad r0.xyz, r2_bx2, r3, r0          ; r0 = t0 + parallax shift
 
 phase
 texld r1, r0.xyz                ; r1 = normals[ t0 + shift ]
 texld r0, r0.xyz                ; r0 = texture[ t0 + shift ]
-texcrd r2.xyz, t2.xyz           ; r2 = vector to eye (v)
-texcrd r3.xyz, t3.xyz           ; r3 = vector to light (l)
+texld r2, t2.xyz                ; r2 = normalized vector to eye (v)
+texld r3, t3.xyz                ; r3 = normalized vector to light (l)
 
-dp3_sat r4, r3, r1_bx2          ; r4 = cos( l, n )       // cos for diffuse
+dp3_sat r4, r3_bx2, r1_bx2          ; r4 = cos( l, n )       // cos for diffuse
 mad r4, r4, c3, c2              ; r4 = point_diffuse * cos( l, n ) + ambient
 
-dp3 r5, r3, r1_bx2              ; r5 = cos( l, n )       // cos for diffuse
-mad r5.xyz, r5_x2, r1_bx2, -r3  ; r5 = 2*(l, n)*n - l    // r for specular
+dp3 r5, r3_bx2, r1_bx2              ; r5 = cos( l, n )       // cos for diffuse
+mad r5.xyz, r5_x2, r1_bx2, -r3_bx2  ; r5 = 2*(l, n)*n - l    // r for specular
 
-dp3_sat r5, r2, r5              ; r5 = cos( v, r )       // cos for specular
+dp3_sat r5, r2_bx2, r5              ; r5 = cos( v, r )       // cos for specular
 mul r5, r5, r5                  ; r5 = r5 ^ f            // cos^f for specular
 mad r4.rgb, r5, c4, r4          ; r4 = point_specular * cos^f + diff_and_amb
 mul r0.rgb, r0, r4              ; r0 = texture_color * light

@@ -28,6 +28,17 @@ template<class Type> void delete_array(Type **dynamic_array)
     }
 }
 
+// a helper to call delete on pointer if it is not NULL
+template<class Type> void delete_pointer(Type **pointer)
+{
+    _ASSERT(NULL != pointer);
+    if( NULL != *pointer)
+    {
+        delete *pointer;
+        *pointer = NULL;
+    }
+}
+
 // a helper to find out a size of an array defined with `array[]={...}' without doing `sizeof(array)/sizeof(array[0])'
 template<size_t SIZE, class T> inline size_t array_size(T (&array)[SIZE])
 {

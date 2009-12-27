@@ -12,6 +12,7 @@ namespace
     const float       ROTATE_STEP = D3DX_PI/30.0f;
     const float       POINT_MOVING_STEP = 0.03f;
     const DWORD       STENCIL_REF_VALUE = 50;
+    const unsigned    NORMALIZATION_CUBE_MAP_SIZE = 1024;
 
 
     //---------------- SHADER CONSTANTS ---------------------------
@@ -62,11 +63,13 @@ namespace
 
 Application::Application() :
     d3d(NULL), device(NULL), window(WINDOW_SIZE, WINDOW_SIZE), camera(3.8f, 1, -0.9f), // Constants selected for better view of the scene
-    point_light_enabled(true), ambient_light_enabled(true), plane(NULL), light_source(NULL), point_light_position(SHADER_VAL_POINT_POSITION)
+    point_light_enabled(true), ambient_light_enabled(true), point_light_position(SHADER_VAL_POINT_POSITION),
+    plane(NULL), light_source(NULL), normalization_texture(NULL)
 {
     try
     {
         init_device();
+        normalization_texture = new CubeTexture( device, NORMALIZATION_CUBE_MAP_SIZE );
     }
     // using catch(...) because every caught exception is rethrown
     catch(...)
@@ -178,13 +181,16 @@ void Application::render()
     {
         for ( Models::iterator iter = models.begin(); iter != models.end(); ++iter )
         {
-            //draw_model( *iter, time, true );
+            draw_model( *iter, time, true );
         }
     }
     // Draw models
     set_render_state( D3DRS_ZENABLE, TRUE );
     set_render_state( D3DRS_STENCILFUNC, D3DCMP_ALWAYS );
     set_render_state( D3DRS_ALPHABLENDENABLE, FALSE );
+    
+    normalization_texture->set(2);
+    normalization_texture->set(3);
     for ( Models::iterator iter = models.begin(); iter != models.end(); ++iter )
     {
         draw_model( *iter, time, false );
@@ -324,6 +330,7 @@ void Application::release_interfaces()
 {
     release_interface( d3d );
     release_interface( device );
+    delete_pointer( &normalization_texture );
 }
 
 Application::~Application()

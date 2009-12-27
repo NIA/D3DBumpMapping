@@ -22,9 +22,9 @@ namespace
     const D3DCOLOR PLANE_COLOR = D3DCOLOR_XRGB(50,150,80);
 
     const float SPHERE_RADIUS = sqrt(2.0f);
-    const float LIGHT_SOURCE_RADIUS = 0.04f;
+    const float LIGHT_SOURCE_RADIUS = 0.1f;
 
-    const DWORD SPHERE_TESSELATE_DEGREE = 50;
+    const DWORD SPHERE_TESSELATE_DEGREE = 5;
     const Index SPHERE_ALL_TESSELATED_VERTICES_COUNT = pyramid_vertices_count(SPHERE_TESSELATE_DEGREE); // per 8 tessellated triangles
     const DWORD SPHERE_ALL_TESSELATED_INDICES_COUNT = pyramid_indices_count(SPHERE_TESSELATE_DEGREE); // per 8 tessellated triangles
 
