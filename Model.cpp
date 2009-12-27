@@ -99,7 +99,8 @@ Model::~Model()
 // -------------------------------------- TexturedModel -------------------------------------------------------------
 
 TexturedModel::TexturedModel
-    (IDirect3DDevice9 *device, D3DPRIMITIVETYPE primitive_type, VertexShader &vertex_shader, VertexShader &shadow_vertex_shader, PixelShader &pixel_shader, PixelShader &shadow_pixel_shader,
+    (IDirect3DDevice9 *device, D3DPRIMITIVETYPE primitive_type,
+     VertexShader &vertex_shader, VertexShader &shadow_vertex_shader, PixelShader &pixel_shader, PixelShader &shadow_pixel_shader,
      const TexturedVertex *vertices, unsigned int vertices_count, const Index *indices, unsigned int indices_count,
      unsigned int primitives_count, D3DXVECTOR3 position, D3DXVECTOR3 rotation, Texture &texture, Texture &normals_texture)
 : Model(device, primitive_type, vertex_shader, shadow_vertex_shader, pixel_shader, shadow_pixel_shader, TexturedVertex::get_declaration(device), sizeof(TexturedVertex), vertices, vertices_count, indices, indices_count, primitives_count, position, rotation),
@@ -109,11 +110,11 @@ TexturedModel::TexturedModel
 
 // ------------------------------------------ Plane --------------------------------------------------------
 
-Plane::Plane( IDirect3DDevice9 *device, D3DPRIMITIVETYPE primitive_type, VertexShader &vertex_shader, PixelShader &pixel_shader, const Vertex *vertices,
-              unsigned vertices_count, const Index *indices, unsigned indices_count, unsigned primitives_count,
-              D3DXVECTOR3 position, D3DXVECTOR3 rotation )
-: Model(device, primitive_type, vertex_shader, vertex_shader, pixel_shader, pixel_shader, Vertex::get_declaration(device), sizeof(Vertex), vertices, vertices_count, indices, indices_count,
-        primitives_count, position, rotation)
+Plane::Plane( IDirect3DDevice9 *device, D3DPRIMITIVETYPE primitive_type, VertexShader &vertex_shader, PixelShader &pixel_shader,
+              const TexturedVertex *vertices, unsigned vertices_count, const Index *indices, unsigned indices_count,
+              unsigned primitives_count, D3DXVECTOR3 position, D3DXVECTOR3 rotation, Texture &texture, Texture &normals_texture )
+: TexturedModel(device, primitive_type, vertex_shader, vertex_shader, pixel_shader, pixel_shader, vertices, vertices_count,
+                indices, indices_count, primitives_count, position, rotation, texture, normals_texture)
 {
     _ASSERT( vertices_count > 0 );
     D3DXVECTOR4 normal_4d = vertices[0].normal;

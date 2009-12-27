@@ -112,7 +112,7 @@ public:
     }
 };
 
-class Plane : public Model
+class Plane : public TexturedModel
 {
 private:
     D3DXVECTOR3 normal;
@@ -122,13 +122,15 @@ public:
             D3DPRIMITIVETYPE primitive_type,
             VertexShader &vertex_shader,
             PixelShader &pixel_shader,
-            const Vertex *vertices,
+            const TexturedVertex *vertices,
             unsigned vertices_count,
             const Index *indices,
             unsigned indices_count,
             unsigned primitives_count,
             D3DXVECTOR3 position,
-            D3DXVECTOR3 rotation);
+            D3DXVECTOR3 rotation,
+            Texture &texture,
+            Texture &normals_texture);
 
     D3DXMATRIX get_projection_matrix(const D3DXVECTOR3 light_position) const;
 };

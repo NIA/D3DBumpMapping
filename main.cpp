@@ -15,6 +15,9 @@ namespace
     const char *SPHERE_TEXTURE_FILENAME = "brickdiff.tga";//"nia.jpg";//
     const char *SPHERE_NORMALS_TEXTURE_FILENAME = "brickbump.tga";
     const D3DCOLOR SPHERE_COLOR = D3DCOLOR_XRGB(255, 190, 0);
+    
+    const char *PLANE_TEXTURE_FILENAME = "relief_wood.jpg";//"scheme.jpg";//
+    const char *PLANE_NORMALS_TEXTURE_FILENAME = "relief_tile1.tga";
     const D3DCOLOR PLANE_COLOR = D3DCOLOR_XRGB(50,150,80);
 
     const float SPHERE_RADIUS = sqrt(2.0f);
@@ -36,7 +39,7 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, INT )
     
     TexturedVertex * sphere_vertices = NULL;
     Index * sphere_indices = NULL;
-    Vertex * plane_vertices = NULL;
+    TexturedVertex * plane_vertices = NULL;
     Index * plane_indices = NULL;
     TexturedVertex * light_source_vertices = NULL;
     Index * light_source_indices = NULL;
@@ -55,6 +58,8 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, INT )
 
             Texture sphere_texture(app.get_device(), SPHERE_TEXTURE_FILENAME);
             Texture sphere_normals(app.get_device(), SPHERE_NORMALS_TEXTURE_FILENAME);
+            Texture plane_texture(app.get_device(), PLANE_TEXTURE_FILENAME);
+            Texture plane_normals(app.get_device(), PLANE_NORMALS_TEXTURE_FILENAME);
             
             // -------------------------- P y r a m i d -----------------------
             sphere_vertices = new TexturedVertex[SPHERE_ALL_TESSELATED_VERTICES_COUNT];
@@ -79,21 +84,23 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, INT )
                                   sphere_normals);
 
             // ----------------------------- P l a n e --------------------------
-            plane_vertices = new Vertex[PLANE_VERTICES_COUNT];
+            plane_vertices = new TexturedVertex[PLANE_VERTICES_COUNT];
             plane_indices = new Index[PLANE_INDICES_COUNT];
             plane(40, 40, plane_vertices, plane_indices, PLANE_COLOR);
 
             Plane plane( app.get_device(),
                          D3DPT_TRIANGLELIST,
-                         plane_vertex_shader,
-                         no_pixel_shader,
+                         sphere_vertex_shader,
+                         sphere_pixel_shader,
                          plane_vertices,
                          PLANE_VERTICES_COUNT,
                          plane_indices,
                          PLANE_INDICES_COUNT,
                          PLANE_INDICES_COUNT/VERTICES_PER_TRIANGLE,
                          D3DXVECTOR3(0, 0, -2.0f),
-                         D3DXVECTOR3(0,0,0) );
+                         D3DXVECTOR3(0,0,0),
+                         plane_texture,
+                         plane_normals);
 
             // -------------------------- Light source --------------------------
             light_source_vertices = new TexturedVertex[LIGHT_SOURCE_ALL_TESSELATED_VERTICES_COUNT];
