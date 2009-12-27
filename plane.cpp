@@ -1,6 +1,6 @@
 #include "plane.h"
 
-const int PLANE_STEPS_PER_HALF_SIDE = 600;
+const int PLANE_STEPS_PER_HALF_SIDE = 300;
 const Index PLANE_VERTICES_COUNT = (2*PLANE_STEPS_PER_HALF_SIDE + 1)*(2*PLANE_STEPS_PER_HALF_SIDE + 1);
 const DWORD PLANE_INDICES_COUNT = 2*VERTICES_PER_TRIANGLE*(2*PLANE_STEPS_PER_HALF_SIDE)*(2*PLANE_STEPS_PER_HALF_SIDE);
 
@@ -20,7 +20,8 @@ void plane(float length, float width, TexturedVertex *res_vertices, Index *res_i
     const Index vertices_in_line = (2*PLANE_STEPS_PER_HALF_SIDE + 1);
     D3DXVECTOR3 tangent( 1, 0, 0);
     D3DXVECTOR3 binormal(0, -1, 0);
-    D3DXVECTOR3 normal(  0, 0, 1);
+    D3DXVECTOR3 normal;
+    D3DXVec3Cross(&normal, &binormal, &tangent);
 
     for( int i = -PLANE_STEPS_PER_HALF_SIDE; i <= PLANE_STEPS_PER_HALF_SIDE; ++i )
     {

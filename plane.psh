@@ -12,7 +12,7 @@ ps_1_4
 
 def c0, 0.0, 0.0, 0.0, 0.0
 def c1, 0.0, 0.0, 1.0, 0.0      ; normal in tangent-space basis
-def c5, 0.05, -0.05, 0, 0
+def c5, -0.05, 0.05, 0, 0
 
 texcrd r0.xyz, t0.xyz           ; r0 = t0
 texld r1, t0                    ; r1 = normals[ t0 ]

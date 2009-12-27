@@ -23,13 +23,13 @@ namespace
     const unsigned    SHADER_SPACE_MODEL_DATA = 8; // number of registers available for
     //    c14 is diffuse coefficient
     const unsigned    SHADER_REG_DIFFUSE_COEF = 14;
-    const float       SHADER_VAL_DIFFUSE_COEF = 0.7f;
+    const float       SHADER_VAL_DIFFUSE_COEF = 0.9f;
     //    c15 is ambient color
     const unsigned    SHADER_REG_AMBIENT_COLOR = 15;
     const D3DCOLOR    SHADER_VAL_AMBIENT_COLOR = D3DCOLOR_XRGB(20, 20, 20);
     //    c16 is point light color
     const unsigned    SHADER_REG_POINT_COLOR = 16;
-    const D3DCOLOR    SHADER_VAL_POINT_COLOR = D3DCOLOR_XRGB(224, 200, 50);
+    const D3DCOLOR    SHADER_VAL_POINT_COLOR = D3DCOLOR_XRGB(255, 244, 50);
     //    c17 is point light position
     const unsigned    SHADER_REG_POINT_POSITION = 17;
     const D3DXVECTOR3 SHADER_VAL_POINT_POSITION  (0.35f*2, -0.91f*2, 0.78f*2);
@@ -38,7 +38,7 @@ namespace
     const D3DXVECTOR3 SHADER_VAL_ATTENUATION  (1.0f, 0, 0.3f);
     //    c19 is specular coefficient
     const unsigned    SHADER_REG_SPECULAR_COEF = 19;
-    const float       SHADER_VAL_SPECULAR_COEF = 0.4f;
+    const float       SHADER_VAL_SPECULAR_COEF = 0.5f;
     //    c20 is specular constant 'f'
     const unsigned    SHADER_REG_SPECULAR_F = 20;
     const float       SHADER_VAL_SPECULAR_F = 35.0f;

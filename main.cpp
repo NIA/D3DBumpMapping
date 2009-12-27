@@ -11,12 +11,13 @@ namespace
     const char *PLANE_SHADER_FILENAME = "plane.vsh";
     const char *LIGHT_SOURCE_SHADER_FILENAME = "light_source.vsh";
     const char *SPHERE_PIXEL_SHADER_FILENAME = "sphere.psh";
+    const char *PLANE_PIXEL_SHADER_FILENAME = "plane.psh";
 
-    const char *SPHERE_TEXTURE_FILENAME = "brickdiff.tga";//"nia.jpg";//
+    const char *SPHERE_TEXTURE_FILENAME = "brickdiff.tga";//"nia.jpg";//"cells.jpg";//
     const char *SPHERE_NORMALS_TEXTURE_FILENAME = "brickbump.tga";
     const D3DCOLOR SPHERE_COLOR = D3DCOLOR_XRGB(255, 190, 0);
     
-    const char *PLANE_TEXTURE_FILENAME = "relief_wood.jpg";//"scheme.jpg";//
+    const char *PLANE_TEXTURE_FILENAME = "scheme.jpg";//"relief_wood.jpg";//"cells.jpg";//
     const char *PLANE_NORMALS_TEXTURE_FILENAME = "relief_tile1.tga";
     const D3DCOLOR PLANE_COLOR = D3DCOLOR_XRGB(50,150,80);
 
@@ -55,6 +56,7 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, INT )
             VertexShader light_source_vertex_shader(app.get_device(), LIGHT_SOURCE_SHADER_FILENAME);
             PixelShader no_pixel_shader(app.get_device());
             PixelShader sphere_pixel_shader(app.get_device(), SPHERE_PIXEL_SHADER_FILENAME);
+            PixelShader plane_pixel_shader(app.get_device(), PLANE_PIXEL_SHADER_FILENAME);
 
             Texture sphere_texture(app.get_device(), SPHERE_TEXTURE_FILENAME);
             Texture sphere_normals(app.get_device(), SPHERE_NORMALS_TEXTURE_FILENAME);
@@ -91,7 +93,7 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, INT )
             Plane plane( app.get_device(),
                          D3DPT_TRIANGLELIST,
                          sphere_vertex_shader,
-                         sphere_pixel_shader,
+                         plane_pixel_shader,
                          plane_vertices,
                          PLANE_VERTICES_COUNT,
                          plane_indices,
