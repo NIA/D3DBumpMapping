@@ -14,6 +14,9 @@ namespace
     const DWORD       STENCIL_REF_VALUE = 50;
     const unsigned    NORMALIZATION_CUBE_MAP_SIZE = 1024;
 
+    const unsigned    SAMPLER_FOR_VECTOR_L = 3;
+    const unsigned    SAMPLER_FOR_VECTOR_V = 2;
+
 
     //---------------- SHADER CONSTANTS ---------------------------
     //    c0-c3 is the view matrix
@@ -51,7 +54,7 @@ namespace
     const unsigned    SHADER_REG_SHADOW_PROJ_MX = 31;
     //    c35 are attenuation constants
     const unsigned    SHADER_REG_SHADOW_ATTENUATION = 35;
-    const D3DXVECTOR3 SHADER_VAL_SHADOW_ATTENUATION  (0.8f, 0, 0.1f);
+    const D3DXVECTOR3 SHADER_VAL_SHADOW_ATTENUATION  (0.3f, 0, 0.1f);
     //---------------- PIXEL SHADER CONSTANTS ---------------------------
     //    c2 is ambient color
     const unsigned    PIXEL_SHADER_REG_AMBIENT_COLOR = 2;
@@ -189,8 +192,8 @@ void Application::render()
     set_render_state( D3DRS_STENCILFUNC, D3DCMP_ALWAYS );
     set_render_state( D3DRS_ALPHABLENDENABLE, FALSE );
     
-    normalization_texture->set(2);
-    normalization_texture->set(3);
+    normalization_texture->set(SAMPLER_FOR_VECTOR_L);
+    normalization_texture->set(SAMPLER_FOR_VECTOR_V);
     for ( Models::iterator iter = models.begin(); iter != models.end(); ++iter )
     {
         draw_model( *iter, time, false );
